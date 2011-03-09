@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry kind="lib" path="libs/gdx-backend-jogl-natives.jar"/>
+	<classpathentry kind="lib" path="libs/gdx-backend-jogl.jar"/>
+	<classpathentry kind="lib" path="libs/gdx-natives.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/SpacedShared"/>
+	<classpathentry kind="lib" path="/SpacedShared/libs/gdx.jar" sourcepath="/Users/elixir/Documents/School/cs4354/Spaced/Shared/libs/gdx-sources.jar"/>
+	<classpathentry kind="lib" path="/SpacedShared/libs/asm-3.3.1.jar"/>
+	<classpathentry kind="lib" path="/SpacedShared/libs/kryo-1.04.jar" sourcepath="/Users/elixir/Documents/School/cs4354/kryo"/>
+	<classpathentry kind="lib" path="/SpacedShared/libs/kryonet-1.04.jar" sourcepath="/Users/elixir/Documents/School/cs4354/kryonet"/>
+	<classpathentry kind="lib" path="/SpacedShared/libs/minlog-1.2.jar"/>
+	<classpathentry kind="lib" path="/SpacedShared/libs/reflectasm-1.01.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
