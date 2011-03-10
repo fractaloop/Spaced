@@ -13,8 +13,8 @@ import edu.spaced.simulation.entity.Player;
  * @author Logan Lowell
  *
  */
-public class PartMessage implements NetMessage {
-	Player player;
+public class PartMessage extends NetMessage {
+	public Player player;
 	
 	@Override
 	public void publish(Connection connection, List<Object> listeners) {

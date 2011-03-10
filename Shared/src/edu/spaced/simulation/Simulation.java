@@ -1,9 +1,6 @@
 package edu.spaced.simulation;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 import com.esotericsoftware.minlog.Log;
 
@@ -12,13 +9,23 @@ import edu.spaced.net.listener.PartListener;
 import edu.spaced.simulation.entity.Entity;
 import edu.spaced.simulation.entity.Player;
 
+/**
+ * Manages a running game simulation. This class only handles the logic of
+ * it's interaction and does not handle visualization. A simulation has only
+ * one active level and a set of active entities.
+ * 
+ * @see Level
+ * 
+ * @author Logan Lowell
+ *
+ */
 public class Simulation implements JoinListener, PartListener {
-	Map<Long, Player> players = Collections.synchronizedMap(new HashMap<Long, Player>());
 	ArrayList<Entity> entities;
 	Level level = null;
 	
 	public Simulation(Level level) {
-		 this.level = level;
+		entities = new ArrayList<Entity>();
+		this.level = level;
 	}
 	
 	public boolean update(float delta) {
@@ -30,16 +37,14 @@ public class Simulation implements JoinListener, PartListener {
 	}
 
 	@Override
-	public void playerParted(Player player) {
-		Log.info("[GAME] Player parted: " + player.getName());
-		players.put(player.getId(), player);
+	public void playerJoined(int playerID, Player player) {
+		Log.info("simulation", "Player joined: " + player.getName());
+		entities.add(player);
 	}
-
+	
 	@Override
-	public void playerJoined(Player player) {
-		Log.info("[GAME] Player joined: " + player.getName());
-		players.remove(player.getId());
-	}
-	
-	
+	public void playerParted(Player player) {
+		Log.info("simulation", "Player parted: " + player.getName());
+		entities.remove(player);
+	}	
 }

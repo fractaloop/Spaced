@@ -10,16 +10,28 @@ import com.esotericsoftware.kryonet.Client;
  * @author Logan Lowell
  */
 public class GameClient extends Network {
-	private Client client;
+	private static final class GameClientHolder {
+		public static GameClient INSTANCE = new GameClient();
+	}
 	
-	public GameClient() {
+	public static GameClient getInstance() {
+		return GameClientHolder.INSTANCE;
+	}
+
+	///////////////////
+
+	private Client client;
+
+	private GameClient() {
 		client = new Client();
+		
 		register(client);
 		
 		client.addListener(this);
 	}
 	
-	public void connect(final String hostname) {
+	public void connectTo(final String hostname) {
+		// Spawn a thread to begin a connection attempt
 		new Thread("Connect") {
 			public void run() {
 				try {
@@ -40,5 +52,13 @@ public class GameClient extends Network {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public int sendTCP(Object object) {
+		return client.sendTCP(object);
+	}
+	
+	public int sendUDP(Object object) {
+		return client.sendUDP(object);
 	}
 }

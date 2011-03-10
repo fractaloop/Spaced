@@ -1,14 +1,24 @@
 package edu.spaced.simulation.entity;
 
 public class Player extends Entity {
-	private long id;
+	public enum State {
+		OBSERVING,
+		ALIVE,
+		DEAD,
+		WAITING_TO_RESPAWN
+	}
+	private int id; // Connection ID
 	private String name;
+	private State state = State.OBSERVING;
 	
-	public void setId(long id) {
+	public boolean equals(Player other) {
+		return other.getId() == id;
+	}
+	public void setId(int id) {
 		this.id = id;
 	}
 
-	public long getId() {
+	public int getId() {
 		return id;
 	}
 
@@ -18,6 +28,14 @@ public class Player extends Entity {
 
 	public String getName() {
 		return name;
+	}
+
+	public void setState(State state) {
+		this.state = state;
+	}
+
+	public State getState() {
+		return state;
 	}
 
 }

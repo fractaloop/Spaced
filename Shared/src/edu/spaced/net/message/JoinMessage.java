@@ -13,14 +13,14 @@ import edu.spaced.simulation.entity.Player;
  * @author Logan Lowell
  *
  */
-public class JoinMesssage implements NetMessage {
-	Player player;
+public class JoinMessage extends NetMessage {
+	public Player player;
 
 	@Override
 	public void publish(Connection connection, List<Object> listeners) {
 		// Publish to all listeners
 		for (Object listener : listeners) {
-			((JoinListener)listener).playerJoined(player);
+			((JoinListener)listener).playerJoined(connection.getID(), player);
 		}
 	}
 }

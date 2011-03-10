@@ -14,13 +14,11 @@ import edu.spaced.screens.GameLoop;
  * @author Logan Lowell
  */
 public class Spaced implements ApplicationListener {
-	private GameClient gameClient;
 	private Screen screen;
 	
 	@Override
 	public void create() {
-		gameClient = new GameClient();
-		gameClient.connect("localhost");
+		GameClient.getInstance().connectTo("localhost");
 		
 		screen = new GameLoop();
 	}
@@ -34,7 +32,7 @@ public class Spaced implements ApplicationListener {
 	@Override
 	public void render() {
 		// Network update
-		gameClient.update();
+		GameClient.getInstance().update();
 		// Game update
 		screen.render(Gdx.graphics.getDeltaTime());
     }

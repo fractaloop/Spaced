@@ -7,9 +7,9 @@ import com.esotericsoftware.kryonet.Connection;
 import edu.spaced.net.message.NetMessage;
 import edu.spaced.net.listener.ChatListener;
 
-public class ChatMessage implements NetMessage {
+public class ChatMessage extends NetMessage {
 	public String text;
-	public long from;
+	public int from;
 	
 	@Override
 	public void publish(Connection connection, List<Object> listeners) {
