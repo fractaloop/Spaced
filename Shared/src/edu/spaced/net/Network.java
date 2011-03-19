@@ -11,12 +11,7 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.EndPoint;
 import com.esotericsoftware.kryonet.Listener;
 
-import edu.spaced.net.message.ConnectedMessage;
-import edu.spaced.net.message.DisconnectedMessage;
-import edu.spaced.net.message.NetMessage;
-import edu.spaced.net.message.JoinMessage;
-import edu.spaced.net.message.PartMessage;
-import edu.spaced.net.message.ChatMessage;
+import edu.spaced.net.message.*;
 import edu.spaced.simulation.entity.Player;
 
 /**
@@ -47,6 +42,10 @@ public class Network extends Listener {
 				kryo.register(Player.State.class);
 		kryo.register(PartMessage.class);
 		kryo.register(ChatMessage.class);
+		kryo.register(ChangeLevelMessage.class);
+		kryo.register(SpawnMessage.class);
+		kryo.register(MoveMessage.class);
+		kryo.register(DeathMessage.class);
 	}
 
 	/**

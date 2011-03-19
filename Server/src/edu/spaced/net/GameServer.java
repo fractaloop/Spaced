@@ -52,7 +52,7 @@ public class GameServer extends Network {
 		
 		// TODO Move the simulation outta here
 		// Begin a single simulation
-		Simulation sim = new Simulation(Level.load("simple.tmx"));
+		Simulation sim = new Simulation(Level.loadFile("simple.tmx"));
 		// Add server-side controllers. They self-register to the network.
 		@SuppressWarnings("unused")
 		AccessController access = new AccessController(sim);

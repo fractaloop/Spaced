@@ -12,7 +12,6 @@ public class SpacedDesktop {
 
 	public static void main(String[] args) {
 		Log.set(Log.LEVEL_DEBUG);
-		new JoglApplication(new Spaced(), "Spaced", 640, 360, false);
+		new JoglApplication(new Spaced(), "Spaced ", 640, 360, false);
 	}
-
 }

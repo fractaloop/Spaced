@@ -1,0 +1,173 @@
+
+test-map1.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+test-map
+  rotate: false
+  xy: 0, 0
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 36
+test-map
+  rotate: false
+  xy: 18, 0
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 37
+test-map
+  rotate: false
+  xy: 36, 0
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 51
+test-map
+  rotate: false
+  xy: 54, 0
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 50
+test-map
+  rotate: false
+  xy: 72, 0
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 53
+test-map
+  rotate: false
+  xy: 90, 0
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 52
+test-map
+  rotate: false
+  xy: 108, 0
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 17
+test-map
+  rotate: false
+  xy: 126, 0
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 19
+test-map
+  rotate: false
+  xy: 144, 0
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 20
+test-map
+  rotate: false
+  xy: 162, 0
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 22
+test-map
+  rotate: false
+  xy: 180, 0
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 18
+test-map
+  rotate: false
+  xy: 198, 0
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 34
+test-map
+  rotate: false
+  xy: 216, 0
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 35
+test-map
+  rotate: false
+  xy: 234, 0
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 21
+test-map
+  rotate: false
+  xy: 252, 0
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 49
+test-map
+  rotate: false
+  xy: 270, 0
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 3
+test-map
+  rotate: false
+  xy: 288, 0
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 54
+test-map
+  rotate: false
+  xy: 306, 0
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 4
+test-map
+  rotate: false
+  xy: 324, 0
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 38
+test-map
+  rotate: false
+  xy: 342, 0
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 33
+test-map
+  rotate: false
+  xy: 360, 0
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 1
+test-map
+  rotate: false
+  xy: 378, 0
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 5
+test-map
+  rotate: false
+  xy: 396, 0
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 2
+test-map
+  rotate: false
+  xy: 414, 0
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 6
