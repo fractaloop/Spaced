@@ -18,6 +18,8 @@ import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.vecmath.Vector2f;
 
+import com.badlogic.gdx.math.Vector2;
+
 import edu.spaced.edit.editor.actions.*;
 import edu.spaced.simulation.Level;
 
@@ -144,8 +146,8 @@ public class EditorView extends JFrame implements ViewportDelegate {
 	}
 
 	@Override
-	public void addWalls(Vector2f[] segments) {
-//		level.addWalls
+	public void addWalls(Vector2[] segments) {
+		System.out.println("adding some walls");
 		
 	}
 }

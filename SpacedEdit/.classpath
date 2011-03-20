@@ -5,5 +5,6 @@
 	<classpathentry kind="lib" path="/SpacedShared/libs/xpp3_min-1.1.4c.jar"/>
 	<classpathentry kind="lib" path="/SpacedShared/libs/xstream-1.3.1.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/SpacedShared"/>
+	<classpathentry kind="lib" path="/SpacedShared/libs/gdx.jar" sourcepath="/Users/elixir/Documents/School/cs4354/Spaced/Shared/libs/gdx-sources.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

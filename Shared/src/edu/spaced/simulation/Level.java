@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import com.thoughtworks.xstream.XStream;
+import com.badlogic.gdx.math.Vector2;
 
 import edu.spaced.simulation.elements.WallElement;
 
@@ -46,9 +47,13 @@ public class Level {
 		// TODO Auto-generated method stub
 		return name;
 	}
-	public void findNearestPointWithin(float x, float y, float f) {
+	
+	//////////////////////////
+	// Geometry and querying
+	
+	public Vector2 findNearestPointWithin(float x, float y, float radius) {
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
 	public static Level loadFile(String string) {
 		return new Level();
