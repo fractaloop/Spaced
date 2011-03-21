@@ -47,19 +47,20 @@ public class EditorController implements EditorViewDelegate {
 	}
 
 	@Override
+	public boolean doNewLevel() {
+		if (!doSaveIfDirty())
+			return false;
+		
+		changeLevel(new Level());
+		
+		return true;
+	}
+	
+	@Override
 	public boolean doOpen() {
 		// If there have been changes, ask about saving them.
-		if (isDirty) {
-			int confirm = JOptionPane.showConfirmDialog(view,
-					"Level has been modified. Would you like to save the changes?", "Confirm save...",
-					JOptionPane.YES_NO_CANCEL_OPTION,
-					JOptionPane.QUESTION_MESSAGE);
-			if (confirm == JOptionPane.YES_OPTION) {
-				doSaveIfModified();
-			} else if (confirm == JOptionPane.CANCEL_OPTION) {
-				return false;
-			} // else ignore changes
-		}
+		if (!doSaveIfDirty())
+			return false;
 		
 		int result = fileChooser.showOpenDialog((Component)view);
 		
@@ -83,23 +84,37 @@ public class EditorController implements EditorViewDelegate {
 	/**
 	 * Returns true if the save was successful.
 	 */
-	@Override
-	public boolean doSaveIfModified() {
+	public boolean doSaveIfDirty() {
 		if (isDirty) {
-			if (currentLevel.getPath() == null) {
-				fileChooser.setSelectedFile(new File(currentLevel.getName() + ".spaced"));
-				int result = fileChooser.showSaveDialog((Component)view);
-				
-				if (result == JFileChooser.APPROVE_OPTION) {
-					Level.saveToPath(currentLevel, fileChooser.getSelectedFile().getPath());
-				} else {
-					return false;
-				}
-			} else {
-				currentLevel.save();
-			}
+			int confirm = JOptionPane.showConfirmDialog(view,
+					"Level has been modified. Would you like to save the changes?", "Confirm save...",
+					JOptionPane.YES_NO_CANCEL_OPTION,
+					JOptionPane.QUESTION_MESSAGE);
+			if (confirm == JOptionPane.YES_OPTION) {
+				doSave();
+			} else if (confirm == JOptionPane.CANCEL_OPTION) {
+				return false;
+			} // else ignore changes
 		}
 		
+		return true;
+	}
+	
+	@Override
+	public boolean doSave() {
+		// Ask where to save the file if it doesn't have a filename yet
+		if (currentLevel.getPath() == null) {
+			fileChooser.setSelectedFile(new File(currentLevel.getName() + ".spaced"));
+			int result = fileChooser.showSaveDialog((Component)view);
+			
+			if (result == JFileChooser.APPROVE_OPTION) {
+				currentLevel.setPath(fileChooser.getSelectedFile().getPath());
+			} else {
+				return false;
+			}
+		}
+		isDirty = false;
+		currentLevel.save();
 		view.updateStatus("Level saved to " + currentLevel.getPath());
 		
 		return true;
@@ -108,8 +123,9 @@ public class EditorController implements EditorViewDelegate {
 
 	@Override
 	public void changeLevel(Level level) {
+		isDirty = false;
 		currentLevel = level;
-		view.setLevel(currentLevel);		
+		view.setLevel(currentLevel);	
 	}
 
 

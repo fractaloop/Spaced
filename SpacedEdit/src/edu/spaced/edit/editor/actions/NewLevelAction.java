@@ -26,9 +26,6 @@ public class NewLevelAction extends AbstractAction {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (delegate.doSaveIfModified()) {
-			Level level = new Level();
-			delegate.changeLevel(level);
-		}
+		delegate.doNewLevel();
 	}
 }

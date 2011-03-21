@@ -55,7 +55,7 @@ public class GameServer extends Network {
 		// Begin a single simulation
 		Simulation sim = null;
 		try {
-			sim = new Simulation(Level.loadFromPath("simple.tmx"));
+			sim = new Simulation(Level.loadFromPath("simple.spaced"));
 		} catch (FileNotFoundException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();

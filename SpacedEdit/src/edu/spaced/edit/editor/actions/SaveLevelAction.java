@@ -17,6 +17,6 @@ public class SaveLevelAction extends AbstractAction {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		delegate.doSaveIfModified();
+		delegate.doSave();
 	}
 }

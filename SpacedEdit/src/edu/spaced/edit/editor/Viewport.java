@@ -36,6 +36,7 @@ public class Viewport extends JPanel {
 	// Drawing variables
 	private boolean isDrawing;
 	private boolean isSnapped;
+	private boolean isOrtho;
 	private ArrayList<Vector2> drawingPoints;
 	private Point mouseLocation;
 	private Vector2 levelCursor;
@@ -44,6 +45,7 @@ public class Viewport extends JPanel {
 		currentLevel = level;
 		isDrawing = false;
 		isSnapped = false;
+		isOrtho = false;
 		drawingPoints = null;
 		mouseLocation = null;
 		levelCursor = null;
@@ -209,6 +211,12 @@ public class Viewport extends JPanel {
 	// Input handling
 	
 	protected void updateCursorSnap() {
+		// Don't bother if we're not even in the level
+		if (levelCursor == null) {
+			isSnapped = false;
+			return;
+		}
+		
 		Vector2 nearestPoint = currentLevel.findNearestPointWithin(levelCursor.x, levelCursor.y, snapDistance / zoom);
 		// If the current segment we're drawing is within snap range and if
 		// there are enough segments to make a triangle, then always snap.
@@ -341,6 +349,7 @@ public class Viewport extends JPanel {
 		currentLevel = level;
 		isDrawing = false;
 		isSnapped = false;
+		isOrtho = false;
 		drawingPoints = null;
 		mouseLocation = null;
 		levelCursor = null;

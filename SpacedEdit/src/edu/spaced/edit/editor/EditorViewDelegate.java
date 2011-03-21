@@ -4,7 +4,8 @@ import edu.spaced.simulation.Level;
 
 public interface EditorViewDelegate {
 	public EditorView getView();
-	public boolean doSaveIfModified();
+	public boolean doNewLevel();
+	public boolean doSave();
 	public boolean doOpen();
 	public void changeLevel(Level level);
 	

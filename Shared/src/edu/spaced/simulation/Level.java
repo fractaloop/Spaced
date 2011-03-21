@@ -110,6 +110,7 @@ public class Level {
 	
 	public Vector2 findNearestPointWithin(float x, float y, float radius) {
 		Vector2 result = null;
+		// TODO search level geometry!
 		
 		return result;
 	}
@@ -127,5 +128,9 @@ public class Level {
 
 	public Object getPath() {
 		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
 	}
 }
