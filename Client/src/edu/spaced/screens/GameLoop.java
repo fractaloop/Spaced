@@ -45,7 +45,7 @@ public class GameLoop implements Screen, ConnectedListener, JoinListener {
 		GameClient.getInstance().subscribe(JoinMessage.class, this);
 		
 		// TODO This isn't going to be tiled, but I need to check some code in!
-		sim = new Simulation(Level.loadFile("simple.tmx"));
+		sim = new Simulation(Level.loadFileFromPath("simple.tmx"));
 		level = TiledLoader.createMap(Gdx.app.getFiles().getFileHandle("test-map.tmx", Files.FileType.Internal));
 		FileHandle packFile = Gdx.app.getFiles().getFileHandle("test-map packfile", Files.FileType.Internal);
 		FileHandle imagesDir = Gdx.app.getFiles().getFileHandle(".", Files.FileType.Internal);

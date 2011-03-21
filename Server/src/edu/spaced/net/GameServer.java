@@ -1,5 +1,6 @@
 package edu.spaced.net;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import com.esotericsoftware.kryonet.Server;
@@ -52,7 +53,14 @@ public class GameServer extends Network {
 		
 		// TODO Move the simulation outta here
 		// Begin a single simulation
-		Simulation sim = new Simulation(Level.loadFile("simple.tmx"));
+		Simulation sim = null;
+		try {
+			sim = new Simulation(Level.loadFromPath("simple.tmx"));
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			System.exit(1);
+		}
 		// Add server-side controllers. They self-register to the network.
 		@SuppressWarnings("unused")
 		AccessController access = new AccessController(sim);

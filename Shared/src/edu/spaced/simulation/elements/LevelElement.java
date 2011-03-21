@@ -48,6 +48,10 @@ public abstract class LevelElement {
 	/////////////////////
 	// Abstract methods
 	/**
+	 * Must be overridden by subclasses to create the Box2D physics bodies.
+	 */
+	public abstract void initialize(World world);
+	/**
 	 * Must be overridden by subclasses to return a collection of all Box2D bodies which make up this element.
 	 */
 	public abstract Collection<Body> getBodies ();

@@ -13,7 +13,6 @@ import edu.spaced.edit.editor.EditorViewDelegate;
 import edu.spaced.simulation.Level;
 
 public class OpenLevelAction extends AbstractAction {
-	final JFileChooser fileChooser;
 	private EditorViewDelegate delegate;
 	
 	public OpenLevelAction(String text, ImageIcon icon, String description, Integer mnemonic, EditorViewDelegate delegate) {
@@ -22,38 +21,10 @@ public class OpenLevelAction extends AbstractAction {
 		
 		putValue(SHORT_DESCRIPTION, description);
 		putValue(MNEMONIC_KEY, mnemonic);
-		
-		fileChooser = new JFileChooser();
-		fileChooser.setFileFilter(new LevelFilter());
-	}
-	
-	private class LevelFilter extends FileFilter {
-
-		@Override
-		public boolean accept(File file) {
-			if (file.isDirectory()) {
-				return false;
-			}
-			
-			return file.getName().endsWith(".spaced");
-		}
-
-		@Override
-		public String getDescription() {
-			return "Spaced levels (*.spaced)";
-		}
-		
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (delegate.doSaveIfModified()) {
-			int result = fileChooser.showOpenDialog((Component)delegate.getView());
-			
-			if (result == JFileChooser.APPROVE_OPTION) {
-				Level level = Level.loadFile(fileChooser.getSelectedFile());
-				delegate.changeLevel(level);
-			}			
-		}
+		delegate.doOpen();
 	}
 }

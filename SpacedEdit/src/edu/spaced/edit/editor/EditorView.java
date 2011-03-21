@@ -22,6 +22,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import edu.spaced.edit.editor.actions.*;
 import edu.spaced.simulation.Level;
+import edu.spaced.simulation.elements.WallElement;
 
 public class EditorView extends JFrame implements ViewportDelegate {
 	private Level level;
@@ -34,8 +35,8 @@ public class EditorView extends JFrame implements ViewportDelegate {
 	OpenLevelAction openLevelAction;
 	SaveLevelAction saveLevelAction;
 	
-	public EditorView() {
-		level = new Level();
+	public EditorView(Level theLevel) {
+		level = theLevel;
 	}
 	
 	public void create() {
@@ -136,6 +137,7 @@ public class EditorView extends JFrame implements ViewportDelegate {
 	public synchronized void setLevel(Level level) {
 		// TODO update the viewport's level!
 		this.level = level;
+		viewport.setLevel(level);
 	}
 
 	//////////////////////
@@ -147,7 +149,10 @@ public class EditorView extends JFrame implements ViewportDelegate {
 
 	@Override
 	public void addWalls(Vector2[] segments) {
-		System.out.println("adding some walls");
+		WallElement walls = new WallElement(segments);
+		level.addElement(walls);
 		
+		delegate.makeDirty();
 	}
+
 }

@@ -4,16 +4,16 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
 import java.util.ArrayList;
+import java.util.Collection;
 
-import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
-import javax.vecmath.Vector2f;
 
 import com.badlogic.gdx.math.Vector2;
 
-import edu.spaced.simulation.Level;
+import edu.spaced.simulation.*;
+import edu.spaced.simulation.elements.*;
 
 public class Viewport extends JPanel {
 	private ViewportDelegate delegate;
@@ -98,6 +98,9 @@ public class Viewport extends JPanel {
 		g2d.draw(line);
 		
 		// Render the level
+		for (LevelElement element : currentLevel.getElements()) {
+			drawElement(g2d, element);
+		}
 		
 		// Render any line we are drawing
 		g2d.setColor(Color.LIGHT_GRAY);
@@ -129,6 +132,17 @@ public class Viewport extends JPanel {
 		}
 	}
 	
+	private void drawElement(Graphics2D g2d, LevelElement element) {
+		if (element instanceof WallElement) {
+			g2d.setColor(Color.LIGHT_GRAY);
+			ArrayList<Vector2> points = ((WallElement)element).getPoints();
+			for (int i = 0; i < points.size() - 1; i++) {
+				Line2D line = new Line2D.Float(levelToView(points.get(i)), levelToView(points.get(i+1)));
+				g2d.draw(line);
+			}
+		}
+	}
+
 	/////////////////////////
 	// Coordinate transform
 	public Vector2 viewToLevel(Point viewCoords) {
@@ -318,6 +332,24 @@ public class Viewport extends JPanel {
 		
 		e.consume();
 	}
+
+	public synchronized Level getLevel() {
+		return currentLevel;
+	}
+
+	public synchronized void setLevel(Level level) {
+		currentLevel = level;
+		isDrawing = false;
+		isSnapped = false;
+		drawingPoints = null;
+		mouseLocation = null;
+		levelCursor = null;
+		zoom = 32;
+		
+		repaint();
+	}
 	
+	//////////////
+	// Accessors
 	
 }
