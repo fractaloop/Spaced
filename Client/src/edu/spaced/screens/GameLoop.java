@@ -21,6 +21,7 @@ import com.badlogic.gdx.graphics.g2d.tiled.TiledMapRenderer;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.minlog.Log;
 
+import edu.spaced.gui.MessageBox;
 import edu.spaced.net.GameClient;
 import edu.spaced.net.listener.ChangeLevelListener;
 import edu.spaced.net.listener.ConnectedListener;
@@ -44,12 +45,12 @@ import edu.spaced.simulation.entity.Player;
 public class GameLoop implements Screen, ConnectedListener, JoinListener, ChangeLevelListener {
 	
 	Simulation sim;
+
 	BitmapFont bigFont;
 	BitmapFont smallFont;
-	BitmapFontCache bigStatusCache;
-	TextBounds bigMetrics;
-	TextBounds smallMetrics;
-	SpriteBatch bigFontBatch;
+	
+	MessageBox messageBox;
+	int messageBoxLines = 5;
 
 	private Renderer renderer;
 
@@ -60,11 +61,10 @@ public class GameLoop implements Screen, ConnectedListener, JoinListener, Change
 		
 		// Load obvious resources
 		bigFont = new BitmapFont(Gdx.files.internal("data/spaced-big.fnt"), Gdx.files.internal("data/spaced-big.png"), false);
-		smallFont = new BitmapFont(Gdx.files.internal("data/spaced-big.fnt"), Gdx.files.internal("data/spaced-big.png"), false);
-		bigStatusCache = new BitmapFontCache(bigFont);
-		bigMetrics = bigFont.getBounds("Connecting...");
-		bigStatusCache.setText("Connecting...", Gdx.graphics.getWidth() / 2 - bigMetrics.width / 2, 2 * Gdx.graphics.getHeight() / 3 + bigMetrics.height / 2);
-		bigFontBatch = new SpriteBatch();
+		smallFont = new BitmapFont(Gdx.files.internal("data/spaced-small.fnt"), Gdx.files.internal("data/spaced-small.png"), false);
+		
+		messageBox = new MessageBox(smallFont, 0, smallFont.getLineHeight() * messageBoxLines, Gdx.graphics.getWidth(), messageBoxLines);
+		messageBox.addString("Connecting...");
 	}
 	
 	@Override
@@ -72,12 +72,10 @@ public class GameLoop implements Screen, ConnectedListener, JoinListener, Change
 		Gdx.graphics.getGL11().glClearColor(0, 0, 0, 1);
 		Gdx.graphics.getGL10().glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
 		
-//		renderer.render(sim);
-		
 		Gdx.graphics.getGL10().glColor4f(1, 1, 1, 1);
-		bigFontBatch.begin();
-		bigStatusCache.draw(bigFontBatch);
-		bigFontBatch.end();
+//		renderer.render(sim);
+
+		messageBox.draw();	
 	}
 
 	@Override
@@ -118,8 +116,6 @@ public class GameLoop implements Screen, ConnectedListener, JoinListener, Change
 
 	@Override
 	public void playerJoined(int playerId, Player player) {
-		Log.info("Game", "Joined game");
-		
 		// Initially, we will auto-spawn the player after joining the server.
 		// We'd really like to allow them to observe the ongoing game before
 		// joining the action, but we'll go with the simple case for now.
@@ -127,6 +123,7 @@ public class GameLoop implements Screen, ConnectedListener, JoinListener, Change
 		spawnMsg.playerId = playerId;
 		GameClient.getInstance().sendTCP(spawnMsg);
 		
+		messageBox.addString("Joined game.");		
 	}
 
 	@Override
@@ -136,13 +133,13 @@ public class GameLoop implements Screen, ConnectedListener, JoinListener, Change
 		joinMsg.player = new Player();
 		joinMsg.player.setName("Unnamed client.");
 		GameClient.getInstance().sendTCP(joinMsg);
-		Log.debug("GameLoop", "Attempting to join...");
+		messageBox.addString("Connected! Joining game...");
 	}
 
 	@Override
 	public void levelChanged(String filename) {
 		try {
-			System.err.println("Server is running map " + filename);
+			messageBox.addString("Playing on map " + filename.substring(0, filename.length() - ".spaced".length()));
 			sim = new Simulation(Level.loadFromPath("data/" + filename));
 		} catch (FileNotFoundException e) {
 			System.err.println("Map " + filename + " was not found! Exiting...");
