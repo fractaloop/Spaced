@@ -126,6 +126,11 @@ public class Level {
 		return elements;
 	}
 
+	public String getFilename() {
+		File handle = new File(path);
+		return handle.getName().toLowerCase();
+	}
+
 	public Object getPath() {
 		return path;
 	}
@@ -133,4 +138,5 @@ public class Level {
 	public void setPath(String path) {
 		this.path = path;
 	}
+	
 }

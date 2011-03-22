@@ -1,11 +1,19 @@
 package edu.spaced.screens;
 
+import java.io.FileNotFoundException;
+
+import javax.swing.JOptionPane;
+
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
+import com.badlogic.gdx.graphics.g2d.BitmapFontCache;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.tiled.TileAtlas;
 import com.badlogic.gdx.graphics.g2d.tiled.TiledLoader;
 import com.badlogic.gdx.graphics.g2d.tiled.TiledMap;
@@ -14,12 +22,15 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.minlog.Log;
 
 import edu.spaced.net.GameClient;
+import edu.spaced.net.listener.ChangeLevelListener;
 import edu.spaced.net.listener.ConnectedListener;
 import edu.spaced.net.listener.JoinListener;
+import edu.spaced.net.message.ChangeLevelMessage;
 import edu.spaced.net.message.ConnectedMessage;
 import edu.spaced.net.message.JoinMessage;
 import edu.spaced.net.message.SpawnMessage;
 import edu.spaced.simulation.Level;
+import edu.spaced.simulation.Renderer;
 import edu.spaced.simulation.Simulation;
 import edu.spaced.simulation.entity.Player;
 
@@ -30,38 +41,43 @@ import edu.spaced.simulation.entity.Player;
  * @author Logan Lowell
  * 
  */
-public class GameLoop implements Screen, ConnectedListener, JoinListener {
+public class GameLoop implements Screen, ConnectedListener, JoinListener, ChangeLevelListener {
 	
 	Simulation sim;
+	BitmapFont bigFont;
+	BitmapFont smallFont;
+	BitmapFontCache bigStatusCache;
+	TextBounds bigMetrics;
+	TextBounds smallMetrics;
+	SpriteBatch bigFontBatch;
 
-	float foo = 0;
-	TiledMap level;
-	TileAtlas atlas;
-	TiledMapRenderer renderer;
-	
+	private Renderer renderer;
 
 	public GameLoop() {
 		GameClient.getInstance().subscribe(ConnectedMessage.class, this);
 		GameClient.getInstance().subscribe(JoinMessage.class, this);
+		GameClient.getInstance().subscribe(ChangeLevelMessage.class, this);
 		
-		// TODO This isn't going to be tiled, but I need to check some code in!
-		sim = new Simulation(Level.loadFileFromPath("simple.tmx"));
-		level = TiledLoader.createMap(Gdx.app.getFiles().getFileHandle("test-map.tmx", Files.FileType.Internal));
-		FileHandle packFile = Gdx.app.getFiles().getFileHandle("test-map packfile", Files.FileType.Internal);
-		FileHandle imagesDir = Gdx.app.getFiles().getFileHandle(".", Files.FileType.Internal);
-		atlas = new TileAtlas(level, packFile, imagesDir);
-		renderer = new TiledMapRenderer(level, atlas, 16, 16);
+		// Load obvious resources
+		bigFont = new BitmapFont(Gdx.files.internal("data/spaced-big.fnt"), Gdx.files.internal("data/spaced-big.png"), false);
+		smallFont = new BitmapFont(Gdx.files.internal("data/spaced-big.fnt"), Gdx.files.internal("data/spaced-big.png"), false);
+		bigStatusCache = new BitmapFontCache(bigFont);
+		bigMetrics = bigFont.getBounds("Connecting...");
+		bigStatusCache.setText("Connecting...", Gdx.graphics.getWidth() / 2 - bigMetrics.width / 2, 2 * Gdx.graphics.getHeight() / 3 + bigMetrics.height / 2);
+		bigFontBatch = new SpriteBatch();
 	}
-
+	
 	@Override
 	public void render(float delta) {
-		foo += delta;
-		Gdx.graphics.getGL11().glClearColor(0,
-				(float) (Math.sin(foo) * Math.sin(foo)), 0, 1);
-		Gdx.graphics.getGL10().glClear(
-				GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
+		Gdx.graphics.getGL11().glClearColor(0, 0, 0, 1);
+		Gdx.graphics.getGL10().glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
 		
-		renderer.render();
+//		renderer.render(sim);
+		
+		Gdx.graphics.getGL10().glColor4f(1, 1, 1, 1);
+		bigFontBatch.begin();
+		bigStatusCache.draw(bigFontBatch);
+		bigFontBatch.end();
 	}
 
 	@Override
@@ -121,6 +137,19 @@ public class GameLoop implements Screen, ConnectedListener, JoinListener {
 		joinMsg.player.setName("Unnamed client.");
 		GameClient.getInstance().sendTCP(joinMsg);
 		Log.debug("GameLoop", "Attempting to join...");
+	}
+
+	@Override
+	public void levelChanged(String filename) {
+		try {
+			System.err.println("Server is running map " + filename);
+			sim = new Simulation(Level.loadFromPath("data/" + filename));
+		} catch (FileNotFoundException e) {
+			System.err.println("Map " + filename + " was not found! Exiting...");
+			// TODO Handle missing file appropriately! Best would be to
+			// download the file from the server.
+			System.exit(1);
+		}
 	}
 
 }

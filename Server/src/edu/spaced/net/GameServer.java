@@ -30,6 +30,8 @@ public class GameServer extends Network {
 	
 	private Server server;
 	
+	private Simulation sim;
+	
 	private final long TICKS_PER_SECOND = 20; // 20 updates/second
 		
 	private GameServer() {
@@ -51,14 +53,12 @@ public class GameServer extends Network {
 			System.exit(1);
 		}
 		
-		// TODO Move the simulation outta here
-		// Begin a single simulation
-		Simulation sim = null;
+		// Begin a new simulation
 		try {
-			sim = new Simulation(Level.loadFromPath("simple.spaced"));
+			sim = new Simulation(Level.loadFromPath("data/test.spaced"));
 		} catch (FileNotFoundException e1) {
 			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			System.err.println("Failed to open default map: test.spaced");
 			System.exit(1);
 		}
 		// Add server-side controllers. They self-register to the network.
@@ -93,6 +93,14 @@ public class GameServer extends Network {
 		server.stop();
 	}
 	
+	public void sendToTCP(int connectionID, Object object) {
+		server.sendToTCP(connectionID, object);
+	}
+	
+	public void sendToUDP(int connectionID, Object object) {
+		server.sendToUDP(connectionID, object);
+	}
+	
 	public void sendToAllTCP(Object object) {
 		server.sendToAllTCP(object);
 	}
@@ -109,5 +117,14 @@ public class GameServer extends Network {
 		server.sendToAllExceptUDP(connectionID, object);
 	}
 	
-	
+	///////////////
+	// Accessors
+
+	public synchronized Simulation getSim() {
+		return sim;
+	}
+
+	public synchronized void setSim(Simulation sim) {
+		this.sim = sim;
+	}
 }

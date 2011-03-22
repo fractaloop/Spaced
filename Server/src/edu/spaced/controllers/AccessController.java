@@ -6,6 +6,7 @@ import edu.spaced.net.GameServer;
 import edu.spaced.net.listener.DisconnectedListener;
 import edu.spaced.net.listener.JoinListener;
 import edu.spaced.net.listener.PartListener;
+import edu.spaced.net.message.ChangeLevelMessage;
 import edu.spaced.net.message.JoinMessage;
 import edu.spaced.net.message.PartMessage;
 import edu.spaced.simulation.Simulation;
@@ -40,7 +41,11 @@ public class AccessController implements JoinListener, PartListener, Disconnecte
 		player.setId(playerID);
 		player.setState(Player.State.OBSERVING);
 
-		// Notify everyone of the join
+		// Notify the new player the level everyone is one
+		ChangeLevelMessage levelMsg = new ChangeLevelMessage();
+		levelMsg.filename = GameServer.getInstance().getSim().getLevel().getFilename();
+		GameServer.getInstance().sendToTCP(playerID, levelMsg);
+		// Notify everyone of the join, including the player
 		JoinMessage msg = new JoinMessage();
 		msg.player = player;
 		GameServer.getInstance().sendToAllTCP(msg);

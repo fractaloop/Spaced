@@ -23,8 +23,7 @@ public class GameController implements SpawnListener, DeathListener, MoveListene
 	}
 
 	@Override
-	public void playerSpawned(long timestamp, int playerId, Vector2 position,
-			float angle) {
+	public void playerSpawned(long timestamp, int playerId, Vector2 position, float angle) {
 		// TODO Auto-generated method stub
 		
 	}
