@@ -2,24 +2,12 @@ package edu.spaced.screens;
 
 import java.io.FileNotFoundException;
 
-import javax.swing.JOptionPane;
-
-import com.badlogic.gdx.Application;
-import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
-import com.badlogic.gdx.graphics.g2d.BitmapFontCache;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.tiled.TileAtlas;
-import com.badlogic.gdx.graphics.g2d.tiled.TiledLoader;
-import com.badlogic.gdx.graphics.g2d.tiled.TiledMap;
-import com.badlogic.gdx.graphics.g2d.tiled.TiledMapRenderer;
 import com.esotericsoftware.kryonet.Connection;
-import com.esotericsoftware.minlog.Log;
 
 import edu.spaced.gui.MessageBox;
 import edu.spaced.net.GameClient;
@@ -43,7 +31,6 @@ import edu.spaced.simulation.entity.Player;
  * 
  */
 public class GameLoop implements Screen, ConnectedListener, JoinListener, ChangeLevelListener {
-	
 	Simulation sim;
 
 	BitmapFont bigFont;
@@ -60,28 +47,29 @@ public class GameLoop implements Screen, ConnectedListener, JoinListener, Change
 		GameClient.getInstance().subscribe(ChangeLevelMessage.class, this);
 		
 		// Load obvious resources
+		renderer = new Renderer();
 		bigFont = new BitmapFont(Gdx.files.internal("data/spaced-big.fnt"), Gdx.files.internal("data/spaced-big.png"), false);
 		smallFont = new BitmapFont(Gdx.files.internal("data/spaced-small.fnt"), Gdx.files.internal("data/spaced-small.png"), false);
 		
-		messageBox = new MessageBox(smallFont, 0, smallFont.getLineHeight() * messageBoxLines, Gdx.graphics.getWidth(), messageBoxLines);
+		messageBox = new MessageBox(smallFont, 2, smallFont.getLineHeight() * messageBoxLines, Gdx.graphics.getWidth(), messageBoxLines);
 		messageBox.addString("Connecting...");
 	}
 	
 	@Override
 	public void render(float delta) {
-		Gdx.graphics.getGL11().glClearColor(0, 0, 0, 1);
-		Gdx.graphics.getGL10().glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
+		GL10 gl = Gdx.graphics.getGL10();
+		gl.glLoadIdentity();
+		gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
 		
-		Gdx.graphics.getGL10().glColor4f(1, 1, 1, 1);
-//		renderer.render(sim);
+		renderer.render(sim);
 
 		messageBox.draw();	
 	}
 
 	@Override
 	public void resize(int width, int height) {
-		// TODO Auto-generated method stub
-
+		renderer.reshape(width, height);
+		messageBox.setWidth(width);
 	}
 
 	@Override

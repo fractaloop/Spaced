@@ -59,7 +59,6 @@ public class MessageBox {
 	}
 	
 	protected void updateCache() {
-		System.out.println("Cache update!");
 		String buffer = new String();
 		for (String line : messages)
 			buffer += line + "\n";
