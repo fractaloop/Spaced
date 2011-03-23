@@ -35,7 +35,7 @@ public class Simulation implements JoinListener, PartListener, SpawnListener, De
 	ArrayList<Entity> entities;
 	Level level = null;
 	
-	public Simulation(Level level) {
+	public Simulation(Level level, boolean initGraphics) {
 		entities = new ArrayList<Entity>();
 		this.level = level;
 		
@@ -44,8 +44,9 @@ public class Simulation implements JoinListener, PartListener, SpawnListener, De
 		world.setContactListener(this);
 		world.setContactFilter(this);
 		
-		for (LevelElement element : level.getElements()) {
-			
+		level.initializePhysics(world);
+		if (initGraphics) {
+			level.initializeGraphics();
 		}
 	}
 	
@@ -80,6 +81,7 @@ public class Simulation implements JoinListener, PartListener, SpawnListener, De
 	@Override
 	public void playerJoined(int playerID, Player player) {
 		Log.info("simulation", "Player joined: " + player.getName());
+		player.setId(playerID);
 		entities.add(player);
 	}
 	
@@ -130,6 +132,7 @@ public class Simulation implements JoinListener, PartListener, SpawnListener, De
 		for (Entity entity : entities) {
 			if (entity instanceof Player) {
 				Player player = (Player)entity;
+				Log.debug("Simulation", "findPlayer(" + playerId + ") gives " + player.getId());
 				if (player.getId() == playerId)
 					return player;
 			}

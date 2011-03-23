@@ -1,13 +1,20 @@
 package edu.spaced.simulation.elements;
 
+import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.GL11;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.BufferUtils;
 
+import edu.spaced.simulation.Box2DFactory;
 import edu.spaced.simulation.Renderer;
 
 /**
@@ -21,7 +28,8 @@ import edu.spaced.simulation.Renderer;
 public class WallElement extends LevelElement {
 	private ArrayList<Vector2> points;
 	
-	transient Body wallBody;
+	transient private FloatBuffer vertexBuffer;
+	transient private List<Body> wallBodies;
 	
 	public WallElement(Vector2 start, Vector2 end) {
 		this(new Vector2[] {start, end});
@@ -32,8 +40,31 @@ public class WallElement extends LevelElement {
 	}
 
 
-	public void initialize(World world) {
-		// TODO Create Box2D bodies
+	public void initializePhysics(World world) {
+		wallBodies = new ArrayList<Body>();
+		for (int i = 0; i < points.size() - 1; i++) {
+			float x1, y1, x2, y2, restitution;
+			x1 = points.get(i).x; 
+			y1 = points.get(i).y; 
+			x2 = points.get(i+1).x; 
+			y2 = points.get(i+1).y;
+			restitution = 0.75f;
+			
+			wallBodies.add(Box2DFactory.createThinWall(world, x1, y1, x2, y2, restitution));			
+		}		
+	}
+	
+	@Override
+	public void initializeGraphics() {
+		// Init the OpenGL stuff
+		GL10 gl = Gdx.graphics.getGL10();
+		vertexBuffer = BufferUtils.newFloatBuffer(points.size() * 2);
+		for (int i = 0; i < points.size(); i++) {
+			vertexBuffer.put(points.get(i).x);
+			vertexBuffer.put(points.get(i).y);
+		}
+		System.out.println();
+		vertexBuffer.rewind();
 	}
 	
 	public ArrayList<Vector2> getPoints() {
@@ -42,13 +73,15 @@ public class WallElement extends LevelElement {
 	
 	@Override
 	public Collection<Body> getBodies() {
-		// TODO Auto-generated method stub
-		return null;
+		return wallBodies;
 	}
 
 	@Override
-	public void draw(Renderer renderer) {
-		// TODO Auto-generated method stub
+	public void draw() {
+		GL10 gl = Gdx.graphics.getGL10();
 		
+		gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
+		gl.glVertexPointer(2, GL10.GL_FLOAT, 0, vertexBuffer);
+		gl.glDrawArrays(GL10.GL_LINE_STRIP, 0, points.size());
 	}
 }

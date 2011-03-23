@@ -3,10 +3,13 @@ package edu.spaced.net;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.utils.GdxNativesLoader;
 import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.minlog.Log;
 
 import edu.spaced.controllers.AccessController;
+import edu.spaced.controllers.GameController;
 import edu.spaced.simulation.Level;
 import edu.spaced.simulation.Simulation;
 
@@ -39,6 +42,9 @@ public class GameServer extends Network {
 		register(server);
 		
 		server.addListener(this);
+		
+		// Native shit
+		GdxNativesLoader.load();
 	}
 	
 	/**
@@ -55,7 +61,7 @@ public class GameServer extends Network {
 		
 		// Begin a new simulation
 		try {
-			sim = new Simulation(Level.loadFromPath("data/test.spaced"));
+			sim = new Simulation(Level.loadFromPath("data/test.spaced"), false);
 		} catch (FileNotFoundException e1) {
 			// TODO Auto-generated catch block
 			System.err.println("Failed to open default map: test.spaced");
@@ -64,7 +70,7 @@ public class GameServer extends Network {
 		// Add server-side controllers. They self-register to the network.
 		@SuppressWarnings("unused")
 		AccessController access = new AccessController(sim);
-
+		GameController game = new GameController(sim);
 		// Start our server once we've loaded a level
 		try {
 			server.start();

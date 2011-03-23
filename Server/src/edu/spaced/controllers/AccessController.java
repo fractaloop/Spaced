@@ -7,6 +7,7 @@ import edu.spaced.net.listener.DisconnectedListener;
 import edu.spaced.net.listener.JoinListener;
 import edu.spaced.net.listener.PartListener;
 import edu.spaced.net.message.ChangeLevelMessage;
+import edu.spaced.net.message.DisconnectedMessage;
 import edu.spaced.net.message.JoinMessage;
 import edu.spaced.net.message.PartMessage;
 import edu.spaced.simulation.Simulation;
@@ -24,6 +25,7 @@ public class AccessController implements JoinListener, PartListener, Disconnecte
 	public AccessController(Simulation sim) {
 		GameServer.getInstance().subscribe(JoinMessage.class, this);
 		GameServer.getInstance().subscribe(PartMessage.class, this);
+		GameServer.getInstance().subscribe(DisconnectedMessage.class, this);
 		
 		this.sim = sim;
 	}

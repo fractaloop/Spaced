@@ -50,16 +50,22 @@ public abstract class LevelElement {
 	/**
 	 * Must be overridden by subclasses to create the Box2D physics bodies.
 	 */
-	public abstract void initialize(World world);
+	public abstract void initializePhysics(World world);
+	
+	/**
+	 * Must be overridden by subclasses to create the OpenGL items
+	 */
+	public void initializeGraphics() {};
+	
 	/**
 	 * Must be overridden by subclasses to return a collection of all Box2D bodies which make up this element.
 	 */
 	public abstract Collection<Body> getBodies ();
 
 	/**
-	 * Must be overridden by subclasses to draw the element, using IFieldRenderer methods.
+	 * Must be overridden by subclasses to draw the element for gameplay.
 	 */
-	public abstract void draw(Renderer renderer);
+	public abstract void draw();
 
 	/**
 	 * Called when a ball collides with a Body in this element. The default implementation does nothing (allowing objects to bounce

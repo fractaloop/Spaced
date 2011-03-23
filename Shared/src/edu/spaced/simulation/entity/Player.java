@@ -5,7 +5,6 @@ public class Player extends Entity {
 		OBSERVING,
 		ALIVE,
 		DEAD,
-		WAITING_TO_RESPAWN
 	}
 	private int id; // Connection ID
 	private String name;

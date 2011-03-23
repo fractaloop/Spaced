@@ -12,6 +12,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g3d.loaders.ModelLoader;
 
+import edu.spaced.simulation.elements.LevelElement;
+
 
 public class Renderer {
 	private Mesh shipMesh;
@@ -43,12 +45,20 @@ public class Renderer {
 		gl.glEnable(GL10.GL_CULL_FACE);
 
 		// Camera
-		camera.zoom = 1/32f;
+		camera.zoom = 1/20f;
 		camera.far = 10f;
 		camera.position.set(0, 0, 1);
 		camera.direction.set(0, 0, -1);//.sub(camera.position).nor();		
 		camera.update();
 		camera.apply(Gdx.gl10);		
+		
+		// Render sim stuff (upside down)
+		gl.glPushMatrix();
+		gl.glRotatef(180, 1, 0, 0);
+		for (LevelElement element : sim.getLevel().getElements()) {
+			element.draw();
+		}
+		gl.glPopMatrix();
 		
 		// Lighting
 		float[] direction = {-1f, 1f, 0.75f, 0};
@@ -57,11 +67,11 @@ public class Renderer {
 		gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_POSITION, direction, 0);
 		gl.glEnable(GL10.GL_COLOR_MATERIAL);
 
-		// Render sim stuff
+		// Render a dummy ship
 		gl.glEnable(GL10.GL_TEXTURE_2D);
 		gl.glTranslatef(0, 0, 0);
 		foo += Gdx.graphics.getDeltaTime() *16;
-		gl.glRotatef(foo, 1, 0, 0);
+		gl.glRotatef(90, 1, 0, 0);
 		shipTexture.bind();
 		shipMesh.render(GL10.GL_TRIANGLES);
 		gl.glDisable(GL10.GL_TEXTURE_2D);
@@ -71,6 +81,7 @@ public class Renderer {
 		gl.glDisable(GL10.GL_LIGHTING);
 		gl.glDisable(GL10.GL_LIGHT0);
 		gl.glDisable(GL10.GL_COLOR_MATERIAL);
+		
 	}
 	
 	public void reshape(int width, int height) {

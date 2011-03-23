@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
 import com.thoughtworks.xstream.*;
 import com.thoughtworks.xstream.annotations.*;
 import com.thoughtworks.xstream.io.path.Path;
@@ -33,6 +34,18 @@ public class Level {
 	public Level() {
 		elements = new ArrayList<LevelElement>();
 		name = "untitled";
+	}
+	
+	public void initializePhysics(World world) {
+		for (LevelElement element : elements) {
+			element.initializePhysics(world);
+		}
+	}
+	
+	public void initializeGraphics() {
+		for (LevelElement element : elements) {
+			element.initializeGraphics();
+		}
 	}
 	
 	/////////////////
