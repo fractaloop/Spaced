@@ -25,8 +25,7 @@ public class Spaced implements ApplicationListener {
 
 	@Override
 	public void resume() {
-		// TODO Auto-generated method stub
-
+		screen.resume();
 	}
 
 	@Override
@@ -39,19 +38,17 @@ public class Spaced implements ApplicationListener {
 
 	@Override
 	public void resize(int width, int height) {
-		// TODO Auto-generated method stub
-
+		screen.resize(width, height);
 	}
 
 	@Override
 	public void pause() {
-		// TODO Auto-generated method stub
-
+		screen.pause();
 	}
 
 	@Override
 	public void dispose() {
-
+		screen.dispose();
 	}
 
 }
