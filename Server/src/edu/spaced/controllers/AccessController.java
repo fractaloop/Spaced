@@ -43,6 +43,9 @@ public class AccessController implements JoinListener, PartListener, Disconnecte
 		player.setId(playerID);
 		player.setState(Player.State.OBSERVING);
 
+		// Add the player
+		GameServer.getInstance().addPlayer(player);
+		
 		// Notify the new player the level everyone is one
 		ChangeLevelMessage levelMsg = new ChangeLevelMessage();
 		levelMsg.filename = GameServer.getInstance().getSim().getLevel().getFilename();
@@ -51,12 +54,13 @@ public class AccessController implements JoinListener, PartListener, Disconnecte
 		JoinMessage msg = new JoinMessage();
 		msg.player = player;
 		GameServer.getInstance().sendToAllTCP(msg);
+		
 	}
 	
 	@Override
 	public void playerParted(int playerId) {
-		// Note: The sim should remove it automatically.
-		
+		GameServer.getInstance().removePlayer(playerId);
+
 		// Reliably notify everyone of the part
 		PartMessage msg = new PartMessage();
 		msg.playerId = playerId;
@@ -67,14 +71,15 @@ public class AccessController implements JoinListener, PartListener, Disconnecte
 	public void disconnected(Connection connection) {
 		// Remove the player from the Sim. We keep it here so the shared code
 		// doesn't clutter.
-		Player player = sim.findPlayer(connection.getID());
+		Player player = GameServer.getInstance().findPlayer(connection.getID());
 		if (player != null) {
 			sim.removeEntity(player);
+
+			// Part this player for everyone. The clients will kill any living
+			// ship.
+			PartMessage partMsg = new PartMessage();
+			partMsg.playerId = connection.getID();
+			GameServer.getInstance().sendToAllTCP(partMsg);
 		}
-		// Part this player for everyone. The clients will kill any living
-		// ship.
-		PartMessage partMsg = new PartMessage();
-		partMsg.playerId = connection.getID();
-		GameServer.getInstance().sendToAllTCP(partMsg);
 	}
 }

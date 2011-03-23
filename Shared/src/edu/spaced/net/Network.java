@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.badlogic.gdx.math.Vector2;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.EndPoint;
@@ -39,6 +40,7 @@ public class Network extends Listener {
 		// Don't forget to register all subclasses!
 		kryo.register(JoinMessage.class);
 			kryo.register(Player.class);
+				kryo.register(Vector2.class);
 				kryo.register(Player.State.class);
 		kryo.register(PartMessage.class);
 		kryo.register(ChatMessage.class);

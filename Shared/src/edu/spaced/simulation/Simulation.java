@@ -29,7 +29,7 @@ import edu.spaced.simulation.entity.Player;
  * @author Logan Lowell
  *
  */
-public class Simulation implements JoinListener, PartListener, SpawnListener, DeathListener, MoveListener, ContactListener, ContactFilter {
+public class Simulation implements ContactListener, ContactFilter {
 	World world;
 	
 	ArrayList<Entity> entities;
@@ -75,48 +75,6 @@ public class Simulation implements JoinListener, PartListener, SpawnListener, De
 		
 	}
 
-	/////////////////////
-	// Network messages
-	
-	@Override
-	public void playerJoined(int playerID, Player player) {
-		Log.info("simulation", "Player joined: " + player.getName());
-		player.setId(playerID);
-		entities.add(player);
-	}
-	
-	@Override
-	public void playerParted(int playerId) {
-		Player player = findPlayer(playerId);
-		entities.remove(player);
-		Log.info("simulation", "Player parted: " + player.getName());
-	}
-
-	@Override
-	public void playerMoved(long timestamp, int playerId, Vector2 position, float angle, Vector2 velocity) {
-		// Update the sim with replay from the timestamp
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void playerDied(int playerId) {
-		// Remove the player body from the sim
-		// Create a nice explosion effect
-		// Play a good BOOM!
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void playerSpawned(long timestamp, int playerId, Vector2 position, float angle) {
-		// Add the player to the sim.
-		// Add some nice warp-in particle effects.
-		// Play a "warp in" type sound
-		// TODO Auto-generated method stub
-		
-	}
-
 	//////////////
 	// Accessors
 	
@@ -127,18 +85,6 @@ public class Simulation implements JoinListener, PartListener, SpawnListener, De
 	public boolean removeEntity(Entity entity) {
 		return entities.remove(entity);
 	}	
-
-	public Player findPlayer(int playerId) {
-		for (Entity entity : entities) {
-			if (entity instanceof Player) {
-				Player player = (Player)entity;
-				Log.debug("Simulation", "findPlayer(" + playerId + ") gives " + player.getId());
-				if (player.getId() == playerId)
-					return player;
-			}
-		}
-		return null;
-	}
 	
 	public Level getLevel() {
 		return level;

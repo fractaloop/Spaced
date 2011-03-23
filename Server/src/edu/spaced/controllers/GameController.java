@@ -44,13 +44,15 @@ public class GameController implements SpawnListener, DeathListener, MoveListene
 	 */
 	@Override
 	public void playerSpawned(long timestamp, int playerId, Vector2 position, float angle) {
-		Player player = sim.findPlayer(playerId); 
+		Player player = GameServer.getInstance().findPlayer(playerId); 
+		
 		if (player != null) {
 			switch(player.getState()) {
 			case DEAD:
 			case OBSERVING:
 				player.setState(Player.State.ALIVE);
 				// Spawn the player
+				sim.addEntity(player);
 				SpawnMessage spawnMsg = new SpawnMessage();
 				spawnMsg.playerId = playerId;
 				spawnMsg.position = new Vector2(0,0);
@@ -61,5 +63,4 @@ public class GameController implements SpawnListener, DeathListener, MoveListene
 //			Log.debug("GameController", "Spawn request for unknown player " + playerId);
 		}
 	}
-
 }

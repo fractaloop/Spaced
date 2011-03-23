@@ -2,6 +2,7 @@ package edu.spaced.net;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.GdxNativesLoader;
@@ -12,6 +13,8 @@ import edu.spaced.controllers.AccessController;
 import edu.spaced.controllers.GameController;
 import edu.spaced.simulation.Level;
 import edu.spaced.simulation.Simulation;
+import edu.spaced.simulation.entity.Entity;
+import edu.spaced.simulation.entity.Player;
 
 /**
  * Singleton class that manages the server. Central point of communication for
@@ -36,12 +39,16 @@ public class GameServer extends Network {
 	private Simulation sim;
 	
 	private final long TICKS_PER_SECOND = 20; // 20 updates/second
+
+	private ArrayList<Player> players;
 		
 	private GameServer() {
 		server = new Server();
 		register(server);
 		
 		server.addListener(this);
+		
+		players = new ArrayList<Player>();
 		
 		// Native shit
 		GdxNativesLoader.load();
@@ -126,11 +133,40 @@ public class GameServer extends Network {
 	///////////////
 	// Accessors
 
+
+	public Player findPlayer(int playerId) {
+		for (Player entity : players) {
+			if (entity instanceof Player) {
+				Player player = (Player)entity;
+				if (player.getId() == playerId)
+					return player;
+			}
+		}
+		return null;
+	}
+	
 	public synchronized Simulation getSim() {
 		return sim;
 	}
 
 	public synchronized void setSim(Simulation sim) {
 		this.sim = sim;
+	}
+
+	public boolean addPlayer(Player player) {
+		return players.add(player);
+	}
+
+	public boolean removePlayer(Player player) {
+		return players.remove(player);
+	}
+
+	public boolean removePlayer(int playerId) {
+		Player player = findPlayer(playerId);
+		if (player != null) {
+			players.remove(player);
+			return true;
+		}
+		return false;		
 	}
 }
