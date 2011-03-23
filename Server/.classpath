@@ -9,5 +9,6 @@
 	<classpathentry kind="lib" path="/SpacedShared/libs/minlog-1.2.jar"/>
 	<classpathentry kind="lib" path="/SpacedShared/libs/reflectasm-1.01.jar"/>
 	<classpathentry kind="lib" path="/SpacedShared/libs/gdx.jar"/>
+	<classpathentry kind="lib" path="/SpacedShared/libs/gdx-natives.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
