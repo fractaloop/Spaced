@@ -2,6 +2,7 @@ package edu.spaced.gui;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.BitmapFontCache;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.HAlignment;
@@ -40,6 +41,11 @@ public class MessageBox {
 		spriteBatch = new SpriteBatch();
 	}
 	
+	public void setWidth(float width) {
+		this.width = width;
+		updateCache();
+	}
+	
 	public void addString(String newString) {
 		messages.remove(0);
 		messages.add(newString);
@@ -53,14 +59,19 @@ public class MessageBox {
 	}
 	
 	protected void updateCache() {
+		System.out.println("Cache update!");
 		String buffer = new String();
 		for (String line : messages)
 			buffer += line + "\n";
+
+		spriteBatch = new SpriteBatch();
 		cache.setMultiLineText(buffer, x, y, width, HAlignment.LEFT);
 	}
 	
 	public void draw() {
 		spriteBatch.begin();
+		spriteBatch.enableBlending();
+		spriteBatch.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 		cache.draw(spriteBatch);
 		spriteBatch.end();
 	}
