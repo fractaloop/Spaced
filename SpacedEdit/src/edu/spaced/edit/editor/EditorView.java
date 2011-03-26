@@ -16,8 +16,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
-import javax.vecmath.Vector2f;
-
 import com.badlogic.gdx.math.Vector2;
 
 import edu.spaced.edit.editor.actions.*;
